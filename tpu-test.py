@@ -14,10 +14,11 @@ inputs = [
 
 tpu_computation = tpu.rewrite(axy_computation, inputs)
 
-tpu_grpc_url = TPUClusterResolver(
-    tpu_names=[os.environ['TPU_NAME']]).get_master()
+#tpu_grpc_url = TPUClusterResolver(
+#    tpu_names=[os.environ['TPU_NAME']]).get_master()
 
-with tf.Session(tpu_grpc_url) as sess:
+##with tf.Session(tpu_grpc_url) as sess:
+with tf.Session('grpc://{TPU_IP}:8470'.format(**os.environ)) as sess:
   sess.run(tpu.initialize_system())
   sess.run(tf.global_variables_initializer())
   output = sess.run(tpu_computation)
